@@ -2,6 +2,8 @@ package com.docurag.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,8 +32,8 @@ public class Chunk {
     @Column(name = "character_count")
     private Integer characterCount;
 
-    // Production: configure pgvector extension (vector(1536)); H2 uses serialized float array
-    @Column(name = "embedding_vector")
+    @Column(name = "embedding_vector", columnDefinition = "vector(1536)")
+    @JdbcTypeCode(SqlTypes.VECTOR)
     private float[] embeddingVector;
 
     @Column(name = "sequence_number", nullable = false)
