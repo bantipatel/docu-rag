@@ -2,6 +2,7 @@ package com.docurag.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class SearchResult {
     @Column(name = "confidence_score")
     private Float confidenceScore;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 }

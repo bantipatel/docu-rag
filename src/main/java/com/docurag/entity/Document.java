@@ -2,6 +2,7 @@ package com.docurag.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class Document {
     private String sourceUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uploaded_by", nullable = false)
+    @JoinColumn(name = "uploaded_by")
     private User uploadedBy;
 
     @Column(name = "upload_timestamp", nullable = false)

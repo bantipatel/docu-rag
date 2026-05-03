@@ -2,8 +2,7 @@ package com.docurag.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -32,13 +31,31 @@ public class Chunk {
     @Column(name = "character_count")
     private Integer characterCount;
 
-    @Column(name = "embedding_vector", columnDefinition = "vector(1536)")
-    @JdbcTypeCode(SqlTypes.VECTOR)
-    private float[] embeddingVector;
+    @Column(name = "embedding_vector", columnDefinition = "TEXT")
+    private String embeddingVector;
 
     @Column(name = "sequence_number", nullable = false)
     private Integer sequenceNumber;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    public float[] getEmbeddingAsFloatArray() {
+        if (embeddingVector == null || embeddingVector.isBlank()) return new float[0];
+        String[] parts = embeddingVector.split(",");
+        float[] result = new float[parts.length];
+        for (int i = 0; i < parts.length; i++) result[i] = Float.parseFloat(parts[i].trim());
+        return result;
+    }
+
+    public void setEmbeddingFromFloatArray(float[] vector) {
+        if (vector == null || vector.length == 0) { this.embeddingVector = null; return; }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < vector.length; i++) {
+            if (i > 0) sb.append(",");
+            sb.append(vector[i]);
+        }
+        this.embeddingVector = sb.toString();
+    }
 }
